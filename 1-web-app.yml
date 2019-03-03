@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters:
+  YourName:
+    Description: Your name.
+    Type: String
+Resources:
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "AllowTheWorld"
+      GroupDescription: "Allows in everything from everyone"
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Allow the world for "
+              - !Ref YourName
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  AmazonLinux:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-02e680c4540db351e"
+      InstanceType: "t2.micro"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+          sudo yum install stress -y
+          stress --cpu 1 --timeout 120
+      SecurityGroups:
+        - !Ref SecurityGroup
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Amazon Linux for "
+              - !Ref YourName
+        -
+          Key: "creator"
+          Value: "CloudFormation"
