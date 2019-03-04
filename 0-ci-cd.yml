@@ -101,6 +101,40 @@ Resources:
                 TemplatePath: TemplateSource::template.yml
                 TemplateConfiguration: TemplateSource::parameters.json
               RunOrder: 1
+        -
+          Name: Approve
+          Actions:
+            -
+              Name: ApproveStack
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: 1
+              RunOrder: 1
+        -
+          Name: Delete
+          Actions:
+            -
+              Name: DeleteStack
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              InputArtifacts:
+                - Name: TemplateSource
+              Configuration:
+                ActionMode: DELETE_ONLY
+                RoleArn: !GetAtt [PipelineRole, Arn]
+                StackName: !Join
+                  - ''
+                  - - !GetAtt [Repository, Name]
+                    - -deploy-stack
+                Capabilities: CAPABILITY_IAM
+                TemplatePath: TemplateSource::template.yml
+                TemplateConfiguration: TemplateSource::parameters.json
+              RunOrder: 1
 Outputs:
   CloneUrlHttp:
     Value: !GetAtt
