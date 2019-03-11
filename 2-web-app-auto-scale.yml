@@ -51,7 +51,8 @@ Resources:
           #!/bin/bash -xe
           sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
           sudo yum install stress -y
-          stress --cpu 1
+          echo '*/10 * * * * stress --cpu 1 --timeout 120' > /tmp/stress_cron.txt
+          sudo -u ec2-user bash -c 'crontab /tmp/stress_cron.txt'
       SubnetId: !Ref PrivateSubnetA
       Tags:
         -
