@@ -4,6 +4,9 @@ Parameters:
   YourName:
     Description: Your name.
     Type: String
+  VPCName:
+    Description: Name of the VPC
+    Type: String
 Resources:
   Repository:
     Type: 'AWS::CodeCommit::Repository'
