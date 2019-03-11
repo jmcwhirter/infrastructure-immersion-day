@@ -4,22 +4,74 @@ Parameters:
   YourName:
     Description: Your name.
     Type: String
+  VPCName:
+    Description: Name of the VPC
+    Type: String
 Resources:
-  SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  VPC:
+    Type: AWS::EC2::VPC
     Properties:
-      GroupName: "AllowTheWorld"
-      GroupDescription: "Allows in everything from everyone"
-      SecurityGroupIngress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: False
+      EnableDnsHostnames: False
       Tags:
         -
           Key: "Name"
           Value: !Join
             - ''
-            - - "Allow the world for "
-              - !Ref YourName
+            - - !Ref VPCName
+              - " VPC"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.0.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet A"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.1.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet B"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 2
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.2.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet C"
         -
           Key: "creator"
           Value: "CloudFormation"
@@ -34,8 +86,7 @@ Resources:
           sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
           sudo yum install stress -y
           stress --cpu 1
-      SecurityGroups:
-        - !Ref SecurityGroup
+      SubnetId: !Ref PrivateSubnetA
       Tags:
         -
           Key: "Name"
