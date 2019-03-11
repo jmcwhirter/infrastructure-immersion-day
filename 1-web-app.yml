@@ -41,6 +41,9 @@ Resources:
         -
           Key: "creator"
           Value: "CloudFormation"
+  ElasticIP:
+  NATGateway:
+  RouteTable:
   AmazonLinux:
     Type: AWS::EC2::Instance
     Properties:
