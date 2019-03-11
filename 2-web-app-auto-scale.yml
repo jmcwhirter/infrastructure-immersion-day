@@ -1,0 +1,143 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters:
+  YourName:
+    Description: Your name.
+    Type: String
+  VPCName:
+    Description: Name of the VPC
+    Type: String
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: False
+      EnableDnsHostnames: False
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - !Ref VPCName
+              - " VPC"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.0.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet A"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.1.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet B"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  PrivateSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 2
+          - Fn::GetAZs: ""
+      CidrBlock: "10.0.2.0/24"
+      MapPublicIpOnLaunch: False
+      VpcId: !Ref VPC
+      Tags:
+        -
+          Key: "Name"
+          Value: "Private Subnet C"
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  AmazonLinux:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-02e680c4540db351e"
+      InstanceType: "t2.micro"
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+          sudo yum install stress -y
+          stress --cpu 1
+      SubnetId: !Ref PrivateSubnetA
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Amazon Linux for "
+              - !Ref YourName
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  AutoScaleGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        - us-east-2a
+      InstanceId: !Ref AmazonLinux
+      MinSize: '1'
+      MaxSize: '3'
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Amazon Linux for "
+              - !Ref YourName
+          PropagateAtLaunch: True
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+  ScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !Ref AutoScaleGroup
+      Cooldown: '1'
+      ScalingAdjustment: '1'
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      EvaluationPeriods: '1'
+      Statistic: Average
+      Threshold: '50'
+      AlarmDescription: Alarm if CPU too high or metric disappears indicating instance
+        is down
+      Period: '60'
+      AlarmActions:
+      - Ref: ScaleUpPolicy
+      Namespace: AWS/EC2
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: AutoScaleGroup
+      ComparisonOperator: GreaterThanThreshold
+      MetricName: CPUUtilization
