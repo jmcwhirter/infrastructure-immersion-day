@@ -51,6 +51,9 @@ Resources:
                 Action: "autoscaling:*"
                 Resource: "*"
               - Effect: Allow
+                Action: "cloudwatch:*"
+                Resource: "*"
+              - Effect: Allow
                 Action:
                   - iam:PassRole
                 Resource: "*"
