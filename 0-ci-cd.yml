@@ -48,6 +48,9 @@ Resources:
                 Action: "ec2:*"
                 Resource: "*"
               - Effect: Allow
+                Action: "autoscaling:*"
+                Resource: "*"
+              - Effect: Allow
                 Action:
                   - iam:PassRole
                 Resource: "*"
