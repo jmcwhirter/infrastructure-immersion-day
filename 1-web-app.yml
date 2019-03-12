@@ -41,21 +41,17 @@ Resources:
         -
           Key: "creator"
           Value: "CloudFormation"
-  ElasticIP:
-  NATGateway:
-  RouteTable:
   AmazonLinux:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: "ami-02e680c4540db351e"
       InstanceType: "t2.micro"
+      Monitoring: True
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash -xe
-          sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-          sudo yum install stress -y
-          echo '*/10 * * * * stress --cpu 1 --timeout 300' > /tmp/stress_cron.txt
-          sudo -u ec2-user bash -c 'crontab /tmp/stress_cron.txt'
+          echo '* * * * * yes > /dev/null &' > /tmp/dev_null.txt
+          sudo -u ec2-user bash -c 'crontab /tmp/dev_null.txt'
       SubnetId: !Ref PrivateSubnetA
       Tags:
         -
