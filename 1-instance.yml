@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters:
+  YourName:
+    Description: Your name.
+    Type: String
+  SubnetId:
+    Description: ID of the subnet to deploy EC2 instance into.
+    Type: String
+Resources:
+  AmazonLinux:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-02e680c4540db351e"
+      InstanceType: "t2.micro"
+      Monitoring: True
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          echo '* * * * * yes > /dev/null &' > /tmp/dev_null.txt
+          sudo -u ec2-user bash -c 'crontab /tmp/dev_null.txt'
+      SubnetId: !Ref SubnetId
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Amazon Linux for "
+              - !Ref YourName
+        -
+          Key: "creator"
+          Value: "CloudFormation"

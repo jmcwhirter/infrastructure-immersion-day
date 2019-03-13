@@ -1,9 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: ''
+Description: 'IaC Immersion Day - VPC, Subnet'
 Parameters:
-  YourName:
-    Description: Your name.
-    Type: String
   VPCName:
     Description: Name of the VPC
     Type: String
@@ -41,25 +38,6 @@ Resources:
         -
           Key: "creator"
           Value: "CloudFormation"
-  AmazonLinux:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: "ami-02e680c4540db351e"
-      InstanceType: "t2.micro"
-      Monitoring: True
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash -xe
-          echo '* * * * * yes > /dev/null &' > /tmp/dev_null.txt
-          sudo -u ec2-user bash -c 'crontab /tmp/dev_null.txt'
-      SubnetId: !Ref PrivateSubnetA
-      Tags:
-        -
-          Key: "Name"
-          Value: !Join
-            - ''
-            - - "Amazon Linux for "
-              - !Ref YourName
-        -
-          Key: "creator"
-          Value: "CloudFormation"
+Outputs:
+  SubnetId:
+    Value: !Ref PrivateSubnetA

@@ -1,6 +1,6 @@
 {
   "Parameters" : {
     "YourName": "justin",
-    "VPCName": "IAC-DAY"
+    "SubnetId": ""
   }
 }

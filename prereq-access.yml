@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: 'IaC Immersion Day - CodePipeline, Systems Manager roles'
+Resources:
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+                - cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CloudPipelinePolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: "cloudformation:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "codecommit:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "s3:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "sns:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "ec2:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "autoscaling:*"
+                Resource: "*"
+              - Effect: Allow
+                Action: "cloudwatch:*"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: "*"
+  ManagedInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ssm.amazonaws.com
+            - ec2.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+      Path: "/"
+Outputs:
+  PipelineRoleArn:
+    Value: !GetAtt [PipelineRole, Arn]
+  ManagedInstanceRoleArn:
+    Value: !GetAtt [ManagedInstanceRole, Arn]
