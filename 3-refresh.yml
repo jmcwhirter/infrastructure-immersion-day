@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters:
+  YourName:
+    Description: Your name.
+    Type: String
+Resources:
+  AmazonLinuxLaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: !Join
+        - ''
+        - - "Amazon Linux Config for "
+          - !Ref YourName
+      ImageId: "ami-02e680c4540db351e"
+      InstanceType: "t2.micro"
+  AutoScaleGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        - us-east-2a
+      LaunchConfigurationName: !Ref AmazonLinuxLaunchConfiguration
+      MinSize: '2'
+      MaxSize: '2'
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - "Amazon Linux for "
+              - !Ref YourName
+          PropagateAtLaunch: 'true'
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+          PropagateAtLaunch: 'true'
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MaxBatchSize: 1
+        MinInstancesInService: 1
+  ScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !Ref AutoScaleGroup
+      Cooldown: '1'
+      ScalingAdjustment: '1'
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      EvaluationPeriods: '1'
+      Period: '60'
+      Statistic: Average
+      Threshold: '50'
+      AlarmDescription: Alarm if CPU too high or metric disappears indicating instance
+        is down
+      AlarmActions:
+      - Ref: ScaleUpPolicy
+      Namespace: AWS/EC2
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: AutoScaleGroup
+      ComparisonOperator: GreaterThanThreshold
+      MetricName: CPUUtilization
