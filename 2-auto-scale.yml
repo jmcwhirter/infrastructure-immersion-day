@@ -37,7 +37,7 @@ Resources:
         - us-east-2a
       InstanceId: !Ref AmazonLinux
       MinSize: '1'
-      MaxSize: '3'
+      MaxSize: '2'
       Tags:
         -
           Key: "Name"
