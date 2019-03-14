@@ -1,5 +1,7 @@
 {
   "Parameters" : {
-    "YourName": "justin"
+    "YourName": "",
+    "SubnetId": "",
+    "OS": ""
   }
 }
