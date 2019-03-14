@@ -1,0 +1,180 @@
+{
+  "Name": "RHEL-6.6_HVM_GA-20150601-x86_64-3-Hourly2-GP2",
+  "Created": "2016-09-30T21:23:54.000Z",
+  "Id": "ami-a9f2a9cc"
+}
+{
+  "Name": "RHEL-6.7_HVM-20160412-x86_64-1-Hourly2-GP2",
+  "Created": "2016-09-30T23:54:22.000Z",
+  "Id": "ami-aff2a9ca"
+}
+{
+  "Name": "RHEL-7.3_HVM_RC1-20161005-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-06T20:04:22.000Z",
+  "Id": "ami-97ecb7f2"
+}
+{
+  "Name": "RHEL-6.8_HVM_GA-20160503-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-13T20:08:12.000Z",
+  "Id": "ami-90164cf5"
+}
+{
+  "Name": "RHEL-7.1_HVM-20150803-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-13T20:52:42.000Z",
+  "Id": "ami-96164cf3"
+}
+{
+  "Name": "RHEL-7.2_HVM-20161025-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-25T21:03:24.000Z",
+  "Id": "ami-0a33696f"
+}
+{
+  "Name": "RHEL-6.8_HVM-20161026-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-26T19:51:00.000Z",
+  "Id": "ami-af3268ca"
+}
+{
+  "Name": "RHEL-7.3_HVM_GA-20161026-x86_64-1-Hourly2-GP2",
+  "Created": "2016-10-26T22:22:11.000Z",
+  "Id": "ami-0932686c"
+}
+{
+  "Name": "RHEL-6.9_HVM_Beta-20161219-x86_64-2-Hourly2-GP2",
+  "Created": "2017-01-03T15:51:33.000Z",
+  "Id": "ami-05ecb660"
+}
+{
+  "Name": "RHEL-6.9_HVM_GA-20170319-x86_64-1-Hourly2-GP2",
+  "Created": "2017-03-20T02:16:32.000Z",
+  "Id": "ami-fa280c9f"
+}
+{
+  "Name": "RHEL-6.9_HVM-20170424-x86_64-1-Hourly2-GP2",
+  "Created": "2017-04-24T15:15:50.000Z",
+  "Id": "ami-b8496edd"
+}
+{
+  "Name": "RHEL-7.3_HVM-20170424-x86_64-1-Hourly2-GP2",
+  "Created": "2017-04-25T00:31:41.000Z",
+  "Id": "ami-f857709d"
+}
+{
+  "Name": "RHEL-6.9_HVM-20170424-x86_64-2-Hourly2-GP2",
+  "Created": "2017-05-15T14:44:15.000Z",
+  "Id": "ami-6adafd0f"
+}
+{
+  "Name": "RHEL-7.3_HVM-20170424-x86_64-2-Hourly2-GP2",
+  "Created": "2017-05-15T14:45:38.000Z",
+  "Id": "ami-21d8ff44"
+}
+{
+  "Name": "RHEL-7.4_HVM_Beta-20170518-x86_64-1-Hourly2-GP2",
+  "Created": "2017-05-18T18:18:19.000Z",
+  "Id": "ami-e4b99e81"
+}
+{
+  "Name": "RHEL-6.9_HVM-20170613-x86_64-3-Hourly2-GP2",
+  "Created": "2017-06-14T20:52:22.000Z",
+  "Id": "ami-10aa8c75"
+}
+{
+  "Name": "RHEL-7.3_HVM-20170613-x86_64-4-Hourly2-GP2",
+  "Created": "2017-06-14T20:57:17.000Z",
+  "Id": "ami-11aa8c74"
+}
+{
+  "Name": "RHEL-7.4_HVM_GA-20170724-x86_64-1-Hourly2-GP2",
+  "Created": "2017-07-24T15:40:37.000Z",
+  "Id": "ami-e4537381"
+}
+{
+  "Name": "RHEL-7.4_HVM_GA-20170808-x86_64-2-Hourly2-GP2",
+  "Created": "2017-08-08T15:35:03.000Z",
+  "Id": "ami-cfdafaaa"
+}
+{
+  "Name": "RHEL-6.9_HVM-20171024-x86_64-2-Hourly2-GP2",
+  "Created": "2017-10-24T16:06:57.000Z",
+  "Id": "ami-11bc9074"
+}
+{
+  "Name": "RHEL-7.4_HVM-20180103-x86_64-2-Hourly2-GP2",
+  "Created": "2018-01-04T01:52:55.000Z",
+  "Id": "ami-0b1e356e"
+}
+{
+  "Name": "RHEL-6.9_HVM-20180103-x86_64-1-Hourly2-GP2",
+  "Created": "2018-01-04T02:21:48.000Z",
+  "Id": "ami-981e35fd"
+}
+{
+  "Name": "RHEL-6.9_HVM-20180118-x86_64-1-Hourly2-GP2",
+  "Created": "2018-01-18T21:24:37.000Z",
+  "Id": "ami-90e6ccf5"
+}
+{
+  "Name": "RHEL-7.4_HVM-20180122-x86_64-1-Hourly2-GP2",
+  "Created": "2018-01-22T17:26:18.000Z",
+  "Id": "ami-cebe94ab"
+}
+{
+  "Name": "RHEL-7.5_Beta_HVM-20180116-x86_64-2-Hourly2-GP2",
+  "Created": "2018-01-23T02:36:49.000Z",
+  "Id": "ami-f3b79d96"
+}
+{
+  "Name": "RHEL-7.5_HVM_GA-20180322-x86_64-1-Hourly2-GP2",
+  "Created": "2018-03-23T20:40:52.000Z",
+  "Id": "ami-03291866"
+}
+{
+  "Name": "RHEL-6.10_HVM_Beta-20180418-x86_64-1-Hourly2-GP2",
+  "Created": "2018-04-19T18:50:17.000Z",
+  "Id": "ami-03c6f566"
+}
+{
+  "Name": "RHEL-6.9_HVM-20180522-x86_64-1-Hourly2-GP2",
+  "Created": "2018-05-22T20:52:15.000Z",
+  "Id": "ami-affcc0ca"
+}
+{
+  "Name": "RHEL-6.10_HVM_GA-20180606-x86_64-1-Hourly2-GP2",
+  "Created": "2018-06-06T22:03:20.000Z",
+  "Id": "ami-16a99673"
+}
+{
+  "Name": "RHEL-6.10_HVM_GA-20180810-x86_64-0-Hourly2-GP2",
+  "Created": "2018-08-10T21:01:56.000Z",
+  "Id": "ami-09ef84c7cb9323838"
+}
+{
+  "Name": "RHEL-7.5_HVM-20180813-x86_64-0-Hourly2-GP2",
+  "Created": "2018-08-15T15:12:47.000Z",
+  "Id": "ami-0376bbf9be9eac670"
+}
+{
+  "Name": "RHEL-7.6_HVM_BETA-20180814-x86_64-0-Hourly2-GP2",
+  "Created": "2018-08-16T19:16:24.000Z",
+  "Id": "ami-006b2db4ca7e39d7d"
+}
+{
+  "Name": "RHEL-7.5-SQL_2017_EE-2018.10.01-1c79ad66-d50f-4d5e-8fef-8fc41ab364ab-ami-02a5bf0f373036b06.4",
+  "Created": "2018-10-02T18:51:24.000Z",
+  "Id": "ami-011bef5eead4fb778"
+}
+{
+  "Name": "RHEL-7.6_HVM_GA-20181017-x86_64-0-Hourly2-GP2",
+  "Created": "2018-10-17T13:08:34.000Z",
+  "Id": "ami-0b500ef59d8335eee"
+}
+{
+  "Name": "RHEL-8.0_HVM_BETA-20181113-x86_64-1-Hourly2-GP2",
+  "Created": "2018-11-13T20:48:58.000Z",
+  "Id": "ami-0ae10902655ba4447"
+}
+{
+  "Name": "RHEL-7.6_HVM_GA-20190128-x86_64-0-Hourly2-GP2",
+  "Created": "2019-02-05T23:52:49.000Z",
+  "Id": "ami-094720ddca649952f"
+}

@@ -4,15 +4,29 @@ Parameters:
   YourName:
     Description: Your name.
     Type: String
+  OS:
+    Description: The operating system you want to load.
+    Type: String
+Mappings:
+  AmiMap:
+    us-east-2:
+      AmazonLinux2: ami-02e680c4540db351e
+      RedHat7: ami-0b500ef59d8335eee
+  DescriptionMap:
+    AmazonLinux2:
+      description: Amazon Linux 2
+    RedHat7:
+      description: Red Hat 7
 Resources:
   AmazonLinuxLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       LaunchConfigurationName: !Join
         - ''
-        - - "Amazon Linux Config for "
-          - !Ref YourName
-      ImageId: "ami-02e680c4540db351e"
+        - - !FindInMap [DescriptionMap, !Ref OS, description]
+          - - " Config for "
+            - !Ref YourName
+      ImageId: !FindInMap [AmiMap, !Ref "AWS::Region", !Ref OS]
       InstanceType: "t2.micro"
   AutoScaleGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -27,8 +41,9 @@ Resources:
           Key: "Name"
           Value: !Join
             - ''
-            - - "Amazon Linux for "
-              - !Ref YourName
+            - - !FindInMap [DescriptionMap, !Ref OS, description]
+              - - " for "
+                - !Ref YourName
           PropagateAtLaunch: 'true'
         -
           Key: "creator"

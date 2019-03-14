@@ -223,15 +223,19 @@ __Steps:__
   git push
   cd ..
   ```
-4. Change the AMI to `ami-0b500ef59d8335eee` and create a new commit.
+4. Let's refresh Amazon Linux 2 with Red Hat
+  - Change the AMI to `ami-0b500ef59d8335eee`
+  - Rename the launch configuration name
+  - Rename the tags passed to EC2 instances
+5. Create a new commit and observe.
 
 __Review:__
--
+- [EC2 Auto Scaling](https://us-east-2.console.aws.amazon.com/ec2/autoscaling)
 
 ## Module 4 - Disaster Recovery
 
-__Questions:__
--
+<!-- __Questions:__
+- -->
 
 __Steps:__
 1. Change your profile to another region
