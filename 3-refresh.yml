@@ -4,19 +4,44 @@ Parameters:
   YourName:
     Description: Your name.
     Type: String
+  SubnetId:
+    Description: ID of the subnet to deploy EC2 instance into.
+    Type: String
+  OS:
+    Description: The operating system you want to load.
+    Type: String
+Mappings:
+  AmiMap:
+    us-east-1:
+      AmazonLinux2: ami-009d6802948d06e52
+      RedHat7: ami-011b3ccf1bd6db744
+    us-east-2:
+      AmazonLinux2: ami-02e680c4540db351e
+      RedHat7: ami-0b500ef59d8335eee
+    us-west-2:
+      AmazonLinux2: ami-01bbe152bf19d0289
+      RedHat7: ami-036affea69a1101c9
+  DescriptionMap:
+    AmazonLinux2:
+      description: Amazon Linux 2
+    RedHat7:
+      description: Red Hat 7
 Resources:
   AmazonLinuxLaunchConfiguration:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       LaunchConfigurationName: !Join
         - ''
-        - - "Amazon Linux Config for "
+        - - !FindInMap [DescriptionMap, !Ref OS, description]
+          - " Config for "
           - !Ref YourName
-      ImageId: "ami-02e680c4540db351e"
+      ImageId: !FindInMap [AmiMap, !Ref "AWS::Region", !Ref OS]
       InstanceType: "t2.micro"
   AutoScaleGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      VPCZoneIdentifier:
+        - !Ref SubnetId
       AvailabilityZones:
         - us-east-2a
       LaunchConfigurationName: !Ref AmazonLinuxLaunchConfiguration
@@ -27,7 +52,8 @@ Resources:
           Key: "Name"
           Value: !Join
             - ''
-            - - "Amazon Linux for "
+            - - !FindInMap [DescriptionMap, !Ref OS, description]
+              - " for "
               - !Ref YourName
           PropagateAtLaunch: 'true'
         -
