@@ -224,19 +224,34 @@ __Steps:__
   git push
   cd ..
   ```
+<<<<<<< HEAD
 5. Change the `OS` parameter to "RedHat7" and create a new commit.
 6. Watch what happens to your instances in the console.
 
 __Review:__
 - [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
 - [EC2 Instances](https://us-east-2.console.aws.amazon.com/ec2)
+=======
+4. Let's refresh Amazon Linux 2 with Red Hat
+  - Change the AMI to `ami-0b500ef59d8335eee`
+  - Rename the launch configuration name
+  - Rename the tags passed to EC2 instances
+5. Create a new commit and observe.
+
+__Review:__
+>>>>>>> 19a0d5e5e29654d06b1b904ea396d8e4a8fbf317
 - [EC2 Auto Scaling](https://us-east-2.console.aws.amazon.com/ec2/autoscaling)
 
 ## Module 4 - Disaster Recovery
 
+<<<<<<< HEAD
 __Questions:__
 - What region and availability zone will the resources be created in?
 - Where is the AMI magic happening? How would you expand this?
+=======
+<!-- __Questions:__
+- -->
+>>>>>>> 19a0d5e5e29654d06b1b904ea396d8e4a8fbf317
 
 __Steps:__
 1. Change your profile to another region
