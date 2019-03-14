@@ -2,7 +2,7 @@
 
 This section is only completed once and likely already has been done for you.
 
-- We need a few roles for CodePipeline and Systems Manager
+- We need a few roles for CodePipeline
 
   _Windows:_
   ```
@@ -282,7 +282,7 @@ __Review:__
 4. Delete the contents of the CI/CD artifact bucket:
 
   _Windows:_<br>
-  _(Not sure how to write this as a one-liner)_
+  _(Or use the console because I'm not sure how to write this as a one-liner)_
   ```
   aws cloudformation describe-stack-resources ^
     --stack-name <your_cicd_stack_name> ^
@@ -304,6 +304,11 @@ __Review:__
 5. Tear down the CI/CD stack:
 ```
 aws cloudformation delete-stack --stack-name <your_cicd_stack_name>
+```
+6. (Optional) If you created the prereq resources, tear those down:
+```
+aws cloudformation delete-stack --stack-name iac-prereq-network
+aws cloudformation delete-stack --stack-name iac-prereq-access
 ```
 
 ## Miscellaneous
