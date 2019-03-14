@@ -62,27 +62,27 @@ __Steps:__
   _Windows:_
   ```
   aws cloudformation create-stack ^
-    --stack-name <your_stack_name> ^
+    --stack-name <your_cicd_stack_name> ^
     --template-body file://0-ci-cd.yml ^
     --parameters file://0-parameters.json
   ```
   _Mac/Linux:_
   ```
   aws cloudformation create-stack \
-    --stack-name <your_stack_name> \
+    --stack-name <your_cicd_stack_name> \
     --template-body file://0-ci-cd.yml \
     --parameters file://0-parameters.json
   ```
 4. The CodeCommit and CodePipeline resources should be created in less than 30
 seconds. Run the following command to check the status. Or check the console.
 ```
-aws cloudformation describe-stacks --stack-name <your_stack_name>
+aws cloudformation describe-stacks --stack-name <your_cicd_stack_name>
 ```
 5. When the pipeline is created you can grab just the repository URL and clone it:
   _Windows:_
   ```
   aws cloudformation describe-stacks ^
-    --stack-name <your_stack_name> ^
+    --stack-name <your_cicd_stack_name> ^
     --query "Stacks[0].Outputs[0].OutputValue" ^
     --output text
   ```
@@ -92,7 +92,7 @@ aws cloudformation describe-stacks --stack-name <your_stack_name>
   _Mac/Linux:_
   ```
   aws cloudformation describe-stacks \
-    --stack-name <your_stack_name> \
+    --stack-name <your_cicd_stack_name> \
     --query 'Stacks[0].Outputs[0].OutputValue' \
     --output text | xargs -I {} \
         git clone {}
@@ -201,7 +201,8 @@ __Questions:__
 __Steps:__
 1. Complete the 'Approve' step in your pipeline.
 2. Confirm the 'Delete' step completes.
-3. Deploy resources through your CI/CD pipeline:
+3. Open `3-parameters.json` and provide a value for `YourName`, `SubnetId`, and `OS` (use "AmazonLinux2" as the OS value)
+4. Save this file.Deploy resources through your CI/CD pipeline:
 
   _Windows:_
   ```
@@ -223,15 +224,19 @@ __Steps:__
   git push
   cd ..
   ```
-4. Change the AMI to `ami-0b500ef59d8335eee` and create a new commit.
+5. Change the `OS` parameter to "RedHat7" and create a new commit.
+6. Watch what happens to your instances in the console.
 
 __Review:__
--
+- [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
+- [EC2 Instances](https://us-east-2.console.aws.amazon.com/ec2)
+- [EC2 Auto Scaling](https://us-east-2.console.aws.amazon.com/ec2/autoscaling)
 
 ## Module 4 - Disaster Recovery
 
 __Questions:__
--
+- What region and availability zone will the resources be created in?
+- Where is the AMI magic happening? How would you expand this?
 
 __Steps:__
 1. Change your profile to another region
@@ -244,26 +249,37 @@ __Steps:__
   _Windows:_
   ```
   aws cloudformation create-stack ^
-    --stack-name <your_stack_name> ^
-    --template-body file://3-refresh.yml ^
-    --parameters file://parameters.json
+    --stack-name <your_dr_stack_name> ^
+    --template-body file://4-dr.yml ^
+    --parameters file://4-parameters.json
   ```
   _Mac/Linux:_
   ```
   aws cloudformation create-stack \
-    --stack-name <your_stack_name> \
-    --template-body file://3-refresh.yml \
-    --parameters file://parameters.json
+    --stack-name <your_dr_stack_name> \
+    --template-body file://4-dr.yml \
+    --parameters file://4-parameters.json
   ```
+3. Add another availability zone and create a new commit.
 
 __Review:__
 - [CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation)
-- [VPC and subnet](https://us-west-2.console.aws.amazon.com/vpc)
 - [EC2 instance and user data](https://us-west-2.console.aws.amazon.com/ec2)
 
 ## Clean up
 
-1. Delete the contents of the bucket FIRST:
+1. Go to [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline) and complete the 'Approve' stage. Confirm the 'Delete' stage completes.
+2. Tear down the DR stack:
+
+  ```
+  aws cloudformation delete-stack --stack-name <your_dr_stack_name>
+  ```
+3. Change your profile back to the original region
+
+  ```
+  aws configure set region us-east-2
+  ```
+4. Delete the contents of the CI/CD artifact bucket:
 
   _Windows:_<br>
   _(Not sure how to write this as a one-liner)_
@@ -285,7 +301,35 @@ __Review:__
         aws s3 rm s3://{} --recursive
   ```
 
-2. THEN delete the stack:
+5. Tear down the CI/CD stack:
 ```
-aws cloudformation delete-stack --stack-name cicd-pipeline
+aws cloudformation delete-stack --stack-name <your_cicd_stack_name>
+```
+
+## Miscellaneous
+
+Required software:
+- AWS CLI
+- jq library
+
+List Amazon Linux 2 AMIs in a region:
+```
+aws ec2 describe-images \
+  --filters "Name=owner-alias,Values=amazon" \
+    "Name=name,Values=amzn2-ami-hvm-*-gp2" \
+    "Name=architecture,Values=x86_64" \
+  --owner "amazon" \
+  --region us-east-2 | \
+  jq '.Images | sort_by(.CreationDate) | .[] | {Name: .Name, Created: .CreationDate, Id: .ImageId}' \
+  > amazonlinux-east-2
+```
+
+List Red Hat AMIs in a region:
+```
+aws ec2 describe-images \
+  --filters "Name=name,Values=RHEL*" \
+    "Name=architecture,Values=x86_64" \
+  --region us-east-2 | \
+  jq '.Images | sort_by(.CreationDate) | .[] | {Name: .Name, Created: .CreationDate, Id: .ImageId}' \
+  > rhel-east-2
 ```
