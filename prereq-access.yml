@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'IaC Immersion Day - CodePipeline, Systems Manager roles'
+Description: 'IaC Immersion Day - CodePipeline role'
 Resources:
   PipelineRole:
     Type: AWS::IAM::Role
