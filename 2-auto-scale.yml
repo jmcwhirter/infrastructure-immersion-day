@@ -7,11 +7,17 @@ Parameters:
   SubnetId:
     Description: ID of the subnet to deploy EC2 instance into.
     Type: String
+Mappings:
+  AmiMap:
+    us-east-1:
+      AmazonLinux2: ami-009d6802948d06e52
+    us-east-2:
+      AmazonLinux2: ami-02e680c4540db351e
 Resources:
   AmazonLinux:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: "ami-02e680c4540db351e"
+      ImageId: !FindInMap [AmiMap, !Ref "AWS::Region", AmazonLinux2]
       InstanceType: "t2.micro"
       Monitoring: True
       UserData:
@@ -34,7 +40,9 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AvailabilityZones:
-        - us-east-2a
+        - !Select
+          - 0
+          - Fn::GetAZs: !Ref 'AWS::Region'
       InstanceId: !Ref AmazonLinux
       MinSize: '1'
       MaxSize: '2'

@@ -43,7 +43,9 @@ Resources:
       VPCZoneIdentifier:
         - !Ref SubnetId
       AvailabilityZones:
-        - us-east-2a
+        - !Select
+          - 0
+          - Fn::GetAZs: !Ref 'AWS::Region'
       LaunchConfigurationName: !Ref AmazonLinuxLaunchConfiguration
       MinSize: '2'
       MaxSize: '2'
