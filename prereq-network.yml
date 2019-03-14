@@ -24,10 +24,9 @@ Resources:
   PrivateSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ""
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref 'AWS::Region'
       CidrBlock: 10.40.144.0/20
       MapPublicIpOnLaunch: False
       VpcId: !Ref VPC
