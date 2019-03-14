@@ -1,0 +1,91 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters:
+  YourName:
+    Description: Your name.
+    Type: String
+  OS:
+    Description: The operating system you want to load.
+    Type: String
+Mappings:
+  AmiMap:
+    us-east-1:
+      AmazonLinux2: ami-009d6802948d06e52
+      RedHat7: ami-011b3ccf1bd6db744
+    us-east-2:
+      AmazonLinux2: ami-02e680c4540db351e
+      RedHat7: ami-0b500ef59d8335eee
+    us-west-2:
+      AmazonLinux2: ami-01bbe152bf19d0289
+      RedHat7: ami-036affea69a1101c9
+  DescriptionMap:
+    AmazonLinux2:
+      description: Amazon Linux 2
+    RedHat7:
+      description: Red Hat 7
+Resources:
+  AmazonLinuxLaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: !Join
+        - ''
+        - - !FindInMap [DescriptionMap, !Ref OS, description]
+          - " Config for "
+          - !Ref YourName
+      ImageId: !FindInMap [AmiMap, !Ref "AWS::Region", !Ref OS]
+      InstanceType: "t2.micro"
+  AutoScaleGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones:
+        - !Select
+          - 0
+          - Fn::GetAZs: !Ref 'AWS::Region'
+        - !Select
+          - 1
+          - Fn::GetAZs: !Ref 'AWS::Region'
+      LaunchConfigurationName: !Ref AmazonLinuxLaunchConfiguration
+      MinSize: '2'
+      MaxSize: '2'
+      Tags:
+        -
+          Key: "Name"
+          Value: !Join
+            - ''
+            - - !FindInMap [DescriptionMap, !Ref OS, description]
+              - " for "
+              - !Ref YourName
+          PropagateAtLaunch: 'true'
+        -
+          Key: "creator"
+          Value: "CloudFormation"
+          PropagateAtLaunch: 'true'
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MaxBatchSize: 1
+        MinInstancesInService: 1
+  ScaleUpPolicy:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: ChangeInCapacity
+      AutoScalingGroupName: !Ref AutoScaleGroup
+      Cooldown: '1'
+      ScalingAdjustment: '1'
+  CPUAlarmHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      EvaluationPeriods: '1'
+      Period: '60'
+      Statistic: Average
+      Threshold: '50'
+      AlarmDescription: Alarm if CPU too high or metric disappears indicating instance
+        is down
+      AlarmActions:
+      - Ref: ScaleUpPolicy
+      Namespace: AWS/EC2
+      Dimensions:
+      - Name: AutoScalingGroupName
+        Value:
+          Ref: AutoScaleGroup
+      ComparisonOperator: GreaterThanThreshold
+      MetricName: CPUUtilization
