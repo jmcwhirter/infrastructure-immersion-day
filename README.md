@@ -139,21 +139,21 @@ __Steps:__
   git push
   cd ..
   ```
-4. Monitor the pipeline through CLI or console:
-
-  ```
-  aws codepipeline list-pipeline-executions --pipeline-name <your_repo_name>-pipeline
-  ```
+4. Monitor the [pipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline) through the console.
+5. Once the 'Deploy' stage is complete review the following:
+  - Your Code Pipeline has created a [CloudFormation](https://us-east-2.console.aws.amazon.com/cloudformation) stack with your name
+  - [EC2 instance](https://us-east-2.console.aws.amazon.com/ec2) is created (Console > EC2 > Instances)
+  - CPU has spiked to ~100% (Select instance > Monitoring tab > CPU Utilization)
 5. Adjust the size of the instance and create a new commit.
-6. Change the user data and create a new commit.
-
-__Review:__
-- [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
-- [CloudFormation](https://us-east-2.console.aws.amazon.com/cloudformation)
-- [VPC and subnet](https://us-east-2.console.aws.amazon.com/vpc)
-- [EC2 instance and user data](https://us-east-2.console.aws.amazon.com/ec2)
+  - Set the size to `t2.small`
+6. Verify your change in the console.
+7. Change the user data to run less frequently and create a new commit.
+  - Set the cron to `*/2 * * * *`
+8. Verify your change in the console.
 
 ## Module 2 - Autoscale
+
+Review the CloudFormation template, `2-auto-scale.yml`, for this module and try to answer the questions below before getting started.
 
 __Questions:__
 - What resources are being added?
@@ -181,10 +181,10 @@ __Steps:__
   cd ..
   ```
 2. Adjust the amount of time between scaling events and create a new commit.
-  - Set the new value to 120 seconds
+  - Set the new value to `120` seconds
 3. Verify your change in the console.
 4. Adjust the max number of instances and create a new commit.
-  - Set the new value to '3'
+  - Set the new value to `3`
 5. Verify your change in the console.
 
 __Review:__
@@ -195,6 +195,8 @@ __Review:__
 
 ## Module 3 - Patch / Refresh
 
+Review the CloudFormation template, `3-refresh.yml`, for this module and try to answer the questions below before getting started.
+
 __Questions:__
 - How could we apply patches to an instance?
 
@@ -202,7 +204,8 @@ __Steps:__
 1. Complete the 'Approve' step in your pipeline.
 2. Confirm the 'Delete' step completes.
 3. Open `3-parameters.json` and provide a value for `YourName`, `SubnetId`, and `OS` (use "AmazonLinux2" as the OS value)
-4. Save this file.Deploy resources through your CI/CD pipeline:
+4. Save this file.
+5. Deploy resources through your CI/CD pipeline:
 
   _Windows:_
   ```
@@ -224,8 +227,8 @@ __Steps:__
   git push
   cd ..
   ```
-5. Change the `OS` parameter to "RedHat7" and create a new commit.
-6. Watch what happens to your instances in the console.
+6. Change the `OS` value to `RedHat7` in your parameters file and create a new commit.
+7. Watch what happens to your instances in the console.
 
 __Review:__
 - [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
@@ -233,6 +236,8 @@ __Review:__
 - [EC2 Auto Scaling](https://us-east-2.console.aws.amazon.com/ec2/autoscaling)
 
 ## Module 4 - Disaster Recovery
+
+Review the CloudFormation template, `4-dr.yml`, for this module and try to answer the questions below before getting started.
 
 __Questions:__
 - What region and availability zone will the resources be created in?
