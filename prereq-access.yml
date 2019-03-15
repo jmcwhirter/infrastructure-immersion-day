@@ -42,6 +42,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - iam:PassRole
+                  - iam:CreateServiceLinkedRole
                 Resource: "*"
   # ManagedInstanceRole:
   #   Type: AWS::IAM::Role
