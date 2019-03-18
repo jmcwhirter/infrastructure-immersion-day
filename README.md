@@ -100,8 +100,9 @@ aws cloudformation describe-stacks --stack-name <your_cicd_stack_name>
 6. Stop here and take a moment to review the resources you have just created.
 
 __Review:__
-- [CloudFormation stack](https://us-east-2.console.aws.amazon.com/cloudformation)
-- [CodePipeline ...pipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
+- [CloudFormation stack](https://us-east-1.console.aws.amazon.com/cloudformation)
+- [CodeCommit repository](https://console.aws.amazon.com/codesuite/codecommit/repositories?region=us-east-1)
+- [CodePipeline ...pipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline)
 
 ## Module 1 - Deploy infrastructure as code
 
@@ -139,10 +140,10 @@ __Steps:__
   git push
   cd ..
   ```
-4. Monitor the [pipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline) through the console.
+4. Monitor the [pipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline) through the console.
 5. Once the 'Deploy' stage is complete review the following:
-  - Your Code Pipeline has created a [CloudFormation](https://us-east-2.console.aws.amazon.com/cloudformation) stack with your name
-  - [EC2 instance](https://us-east-2.console.aws.amazon.com/ec2) is created (Console > EC2 > Instances)
+  - Your Code Pipeline has created a [CloudFormation](https://us-east-1.console.aws.amazon.com/cloudformation) stack with your name
+  - [EC2 instance](https://us-east-1.console.aws.amazon.com/ec2) is created (Console > EC2 > Instances)
   - CPU has spiked to ~100% (Select instance > Monitoring tab > CPU Utilization)
 5. Adjust the size of the instance and create a new commit.
   - Set the size to `t2.small`
@@ -188,10 +189,10 @@ __Steps:__
 5. Verify your change in the console.
 
 __Review:__
-- [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
-- [CloudFormation](https://us-east-2.console.aws.amazon.com/cloudformation)
-- [Auto scale group, Scaling policy](https://us-east-2.console.aws.amazon.com/ec2)
-- [CloudWatch alarm](https://us-east-2.console.aws.amazon.com/cloudwatch)
+- [CodePipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline)
+- [CloudFormation](https://us-east-1.console.aws.amazon.com/cloudformation)
+- [Auto scale group, Scaling policy](https://us-east-1.console.aws.amazon.com/ec2)
+- [CloudWatch alarm](https://us-east-1.console.aws.amazon.com/cloudwatch)
 
 ## Module 3 - Patch / Refresh
 
@@ -231,9 +232,9 @@ __Steps:__
 7. Watch what happens to your instances in the console.
 
 __Review:__
-- [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline)
-- [EC2 Instances](https://us-east-2.console.aws.amazon.com/ec2)
-- [EC2 Auto Scaling](https://us-east-2.console.aws.amazon.com/ec2/autoscaling)
+- [CodePipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline)
+- [EC2 Instances](https://us-east-1.console.aws.amazon.com/ec2)
+- [EC2 Auto Scaling](https://us-east-1.console.aws.amazon.com/ec2/autoscaling)
 
 ## Module 4 - Disaster Recovery
 
@@ -273,7 +274,7 @@ __Review:__
 
 ## Clean up
 
-1. Go to [CodePipeline](https://us-east-2.console.aws.amazon.com/codesuite/codepipeline) and complete the 'Approve' stage. Confirm the 'Delete' stage completes.
+1. Go to [CodePipeline](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline) and complete the 'Approve' stage. Confirm the 'Delete' stage completes.
 2. Tear down the DR stack:
 
   ```
@@ -282,7 +283,7 @@ __Review:__
 3. Change your profile back to the original region
 
   ```
-  aws configure set region us-east-2
+  aws configure set region us-east-1
   ```
 4. Delete the contents of the CI/CD artifact bucket:
 
@@ -329,7 +330,7 @@ aws ec2 describe-images \
     "Name=name,Values=amzn2-ami-hvm-*-gp2" \
     "Name=architecture,Values=x86_64" \
   --owner "amazon" \
-  --region us-east-2 | \
+  --region us-east-1 | \
   jq '.Images | sort_by(.CreationDate) | .[] | {Name: .Name, Created: .CreationDate, Id: .ImageId}' \
   > amazonlinux-east-2
 ```
@@ -339,7 +340,7 @@ List Red Hat AMIs in a region:
 aws ec2 describe-images \
   --filters "Name=name,Values=RHEL*" \
     "Name=architecture,Values=x86_64" \
-  --region us-east-2 | \
+  --region us-east-1 | \
   jq '.Images | sort_by(.CreationDate) | .[] | {Name: .Name, Created: .CreationDate, Id: .ImageId}' \
   > rhel-east-2
 ```
