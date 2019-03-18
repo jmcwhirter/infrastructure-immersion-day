@@ -1,4 +1,30 @@
+## Overview
+
+The purpose of this lab is to expose infrastructure and operations engineers to
+infrastructure as code. We use CodePipeline to practice continuous integration/
+continuous deployment of our code. We create a single instance, then auto scale
+it in response to load. We the use the auto scale group to facilitate a rolling
+refresh of our operating system.
+
+#### Things to keep in mind:
+- This lab supports the following regions:
+  - us-east-1
+  - us-east-1
+  - us-west-2
+- Additional regions can be supported if the AMIs are provided in the AMI map
+- Case matters, especially when it comes to stack names
+
+#### todo:
+- [ ] Create architecture diagrams for each phase
+- [ ] Add SMS notification for auto scaling events
+- [ ] Add out of the box support for other regions
+
+
 ## Prereq
+
+Install the following software on your laptop/desktop:
+- [Git](https://git-scm.com/downloads)
+- [AWS CLI](https://aws.amazon.com/cli/)
 
 This section is only completed once and likely already has been done for you.
 
@@ -55,7 +81,7 @@ We're going to create CodeCommit and CodePipeline resources to help us execute
 new CloudFormation templates after committing them to a source code repository
 
 __Steps:__
-1. Open `0-parameters.json` and provide a value for `YourName` and `RoleArn`.
+1. Open `0-parameters.json` and provide a value for `YourName` and `PipelineRoleArn`.
 2. Save this file.
 3. Run the following command to set up CodeCommit and CodePipeline:
 
@@ -145,6 +171,7 @@ __Steps:__
   - Your Code Pipeline has created a [CloudFormation](https://us-east-1.console.aws.amazon.com/cloudformation) stack with your name
   - [EC2 instance](https://us-east-1.console.aws.amazon.com/ec2) is created (Console > EC2 > Instances)
   - CPU has spiked to ~100% (Select instance > Monitoring tab > CPU Utilization)
+  - Don't complete the 'Approve' stage yet because doing so will delete your infrastructure in the next step
 5. Adjust the size of the instance and create a new commit.
   - Set the size to `t2.small`
 6. Verify your change in the console.
@@ -250,7 +277,8 @@ __Steps:__
   ```
   aws configure set region us-west-2
   ```
-2. Deploy CloudFormation
+2. Open 4-parameters.json and provide a value for YourName and OS (use "AmazonLinux2" or "RedHat7" as the OS value)
+3. Deploy CloudFormation
 
   _Windows:_
   ```
@@ -266,7 +294,7 @@ __Steps:__
     --template-body file://4-dr.yml \
     --parameters file://4-parameters.json
   ```
-3. Add another availability zone and create a new commit.
+4. Add another availability zone and create a new commit.
 
 __Review:__
 - [CloudFormation](https://us-west-2.console.aws.amazon.com/cloudformation)
